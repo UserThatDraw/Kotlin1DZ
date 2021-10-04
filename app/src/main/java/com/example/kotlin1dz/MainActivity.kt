@@ -3,7 +3,10 @@ package com.example.kotlin1dz
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import com.example.kotlin1dz.databinding.ActivityMainBinding
+import com.example.kotlin1dz.utils.extencions.errorText
+import com.example.kotlin1dz.utils.extencions.getTextE
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -12,21 +15,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        if (intent.getSerializableExtra("text2") != null ) {
-            var text = intent.getSerializableExtra("text2")
-            binding.kakoytoEtActiv1.hint = text.toString()
-        }
+        if (intent.getSerializableExtra("text2") != null) binding.kakoytoEtActiv1.setText(
+            intent.getSerializableExtra(
+                "text2"
+            ).toString()
+        )
         click()
     }
 
     private fun click() {
         binding.kakoytoBtnActiv1.setOnClickListener {
-            if (binding.kakoytoEtActiv1.text.toString() >= 1.toString()) {
+            if (!TextUtils.isEmpty(binding.kakoytoEtActiv1.text)) {
                 val intent = Intent(this@MainActivity, MainActivity2::class.java)
-                intent.putExtra("text", binding.kakoytoEtActiv1.text.toString())
+                intent.putExtra("text", binding.kakoytoEtActiv1.getTextE())
                 startActivity(intent)
             } else {
-                binding.kakoytoEtActiv1.error = "Введите текст"
+                binding.kakoytoEtActiv1.errorText()
             }
         }
     }
